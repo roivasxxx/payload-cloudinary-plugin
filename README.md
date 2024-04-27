@@ -1,56 +1,33 @@
-# payload-cloudinary-plugin
+# This is a fork of [payload-cloudinary-plugin](https://github.com/finkinfridom/payload-cloudinary-plugin)
 
-Extends `payloadcms` with Cloudinary integration
+The base plugin allows specifying a single cloudinary folder that will be used for uploads, this fork exposes a way of specifying a cloudinary folder on a per image basis
 
-## Current status
+This fork also provides the option to disable the automatic addition of a timestamp to file names during uploads (original file names are only used when [use_filename:true](https://support.cloudinary.com/hc/en-us/articles/202520762-Uploading-assets-and-keeping-their-original-filenames) in the options parameter of mediaManagement is provided, the plugin adds a timestamp to this filename)
 
-[![codeql](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/codeql.yml/badge.svg)](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/codeql.yml)
+# Specifying a folder
+Add this field to your Payload upload collection:
 
-[![test](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/test.yml)
-
-[![publish](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/publish.yml/badge.svg)](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/publish.yml)
-
-[![GitHub Super-Linter](https://github.com/finkinfridom/payload-cloudinary-plugin/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/finkinfridom/payload-cloudinary-plugin/actions/workflows/linter.yml)
-
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/320b671855ce462d9c21b3769486c256)](https://app.codacy.com/gh/finkinfridom/payload-cloudinary-plugin/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-
-## Install
-
-`yarn add payload-cloudinary-plugin`
-
-## Get Started
-
-### server.ts
-
-```js
-import { mediaManagement } from "payload-cloudinary-plugin";
-
-app.use(mediaManagement());
 ```
-
-### payload.config.ts
-
-```js
-import cloudinaryPlugin from "payload-cloudinary-plugin/dist/plugins";
-
-export default buildConfig({
-    ....
-    plugins: [cloudinaryPlugin()]
-    ....
-})
+{
+  name: "folder",
+  type: "text"
+}
 ```
+Fill the field out with your desired cloudinary folder
 
-### mediaManagement function
+## If no folder is provided(empty field), it falls back to the folder configured via the options parameter of mediaManagement, defaults to /media
 
-```js
-function mediaManagement(
-  config?: ConfigOptions,
-  uploadApiOptions?: UploadApiOptions,
-  uploadResourceTypeHandler?: Function
-)
+# Disabling automatic addition of timestamp to filenames
+## Using this option may introduce issues!
+
+Add this field to your payload upload collection:
+
 ```
+{
+  name: "addFileNameDate",
+  type: "checkbox"
+}
+```
+Checking it will disable the addition of a timestamp to file names:
 
-The function may receive a `ConfigOptions` and a `UploadApiOptions` from `cloudinary` package.
-Additionally, you can specify a `uploadResourceTypeHandler` to manage which `resource_type` parameter must be passed to `cloudinary.upload` (see here: https://cloudinary.com/documentation/image_upload_api_reference#upload_optional_parameters for additional information).
-
-If the `uploadResourceTypeHandler` is NOT specified, `resource_type: auto` will be passed to upload method.
+eg: ```image.png``` will remain ```image.png```
