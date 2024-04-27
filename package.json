@@ -1,5 +1,5 @@
 {
-  "name": "payload-cloudinary-plugin-forked",
+  "name": "@roivasxxx/payload-cloudinary-plugin",
   "version": "0.1.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
