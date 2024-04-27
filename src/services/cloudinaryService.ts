@@ -30,7 +30,9 @@ export class CloudinaryService {
     filename: string,
     buffer: Buffer,
     payload: Payload,
-    collectionConfig?: SanitizedCollectionConfig
+    collectionConfig?: SanitizedCollectionConfig,
+    folder?: string,
+    addFileNameDate?: boolean
   ): Promise<UploadApiResponse> {
     const _cfg = {
       ...this.config,
@@ -44,14 +46,20 @@ export class CloudinaryService {
       collectionConfig?.upload || {};
     const staticPath = path.resolve(payload.config.paths.configDir, staticDir);
     await fs.promises.mkdir(staticPath, { recursive: true });
+    
+    let newFileName = filename;
+    if (addFileNameDate) {
+      newFileName = `${new Date().getTime()}_${newFileName}`
+    }
     const tmpFileName = path.join(
       staticPath,
-      `${new Date().getTime()}_${filename}`
+      newFileName
     );
     await fs.promises.writeFile(tmpFileName, buffer);
     const _opts = {
       ...this.options,
-      folder: this.options?.folder || staticURL,
+      // prioritize the folder from the folder field
+      folder: folder || this.options?.folder || staticURL,
     };
     let _resourceType = this.options?.resource_type;
     if (!_resourceType) {
@@ -61,7 +69,7 @@ export class CloudinaryService {
     }
     const uploadPromise = cloudinary.uploader.upload(tmpFileName, {
       ..._opts,
-      resource_type: _resourceType,
+      resource_type: _resourceType
     });
     await fs.promises.rm(tmpFileName);
     return uploadPromise;

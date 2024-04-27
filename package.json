@@ -1,9 +1,9 @@
 {
-  "name": "payload-cloudinary-plugin",
+  "name": "payload-cloudinary-plugin-forked",
   "version": "0.1.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/finkinfridom/payload-cloudinary-plugin.git",
+  "repository": "https://github.com/roivasxxx/payload-cloudinary-plugin",
   "author": "a.maghini@gmail.com",
   "license": "MIT",
   "files": [

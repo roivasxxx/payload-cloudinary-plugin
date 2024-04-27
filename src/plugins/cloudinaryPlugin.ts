@@ -72,7 +72,10 @@ export const beforeChangeHook: CollectionBeforeChangeHook = async (args) => {
       args.data.filename,
       file.data,
       args.req.payload,
-      args.req.collection?.config
+      args.req.collection?.config,
+      // these two fields need to be added in the collection config
+      args.data.folder || "/media",
+      args.data.addFileNameDate || false
     );
     return {
       ...args.data,
